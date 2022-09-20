@@ -26,7 +26,6 @@ import EducationComponent from "@/components/EducationComponent.vue";
 import CertificationComponent from "@/components/CertificationComponent.vue";
 
 export default {
-  name: 'App',
   components: {
     BioComponent,
     ContactComponent,
@@ -35,11 +34,9 @@ export default {
     SkillComponent,
     ExperienceComponent,
     EducationComponent,
-    CertificationComponent
-  }
-}
+    CertificationComponent,
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>
