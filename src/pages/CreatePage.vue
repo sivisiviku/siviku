@@ -10,7 +10,17 @@
           v-model="form.fullname"
         />
       </div>
-      <!-- upload image here -->
+      <div class="mb-4">
+        <label class="block mb-2" for="photo">Photo</label>
+        <img :src="photoPreview" width="300" />
+        <input
+          class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          id="photo"
+          type="file"
+          accept="image/*"
+          @change="inputFile"
+        />
+      </div>
       <div class="mb-4">
         <label class="block mb-2" for="adress">Address</label>
         <input
@@ -49,7 +59,6 @@
         <span class="text-xs italic text-slate-600"
           >Separate with comma if more than one</span
         >
-        <!-- button add for languages -->
       </div>
     </div>
     <div class="col-span-2 bg-zinc-100 p-5 rounded-lg shadow-lg">
@@ -253,6 +262,7 @@
   </div>
   <div class="flex justify-center mb-10">
     <button
+      @click="save"
       class="bg-transparent text-green-600 border border-green-600 hover:border-transparent hover:bg-green-600 mx-5 px-5 py-2 w-1/4 hover:text-white font-semibold rounded-full"
     >
       Save
@@ -261,11 +271,14 @@
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   data() {
     return {
       form: {
         fullname: "",
+        photo: "",
         contact: {
           address: "",
           email: "",
@@ -277,6 +290,8 @@ export default {
         educations: [],
         certifications: [],
       },
+      photoPreview: "",
+      photoUpload: "",
       skill: {
         name: "",
         level: 0,
@@ -299,6 +314,19 @@ export default {
       },
       certification: "",
     };
+  },
+  methods: {
+    inputFile(event) {
+      this.photoUpload = event.target.files[0];
+      const fileReader = new FileReader();
+      fileReader.addEventListener("load", () => {
+        this.photoPreview = fileReader.result;
+      });
+      fileReader.readAsDataURL(this.photoUpload);
+    },
+    save() {
+      firebase.storage().ref(`${this.photoUpload.name}`).put(this.photoUpload);
+    },
   },
 };
 </script>
