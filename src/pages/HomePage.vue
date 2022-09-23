@@ -16,14 +16,14 @@
 </template>
 
 <script>
-import BioComponent from "@/components/BioComponent.vue";
-import ContactComponent from "@/components/ContactComponent.vue";
-import LanguageComponent from "@/components/LanguageComponent.vue";
-import SummaryComponent from "@/components/SummaryComponent.vue";
-import SkillComponent from "@/components/SkillComponent.vue";
-import ExperienceComponent from "@/components/ExperienceComponent.vue";
-import EducationComponent from "@/components/EducationComponent.vue";
-import CertificationComponent from "@/components/CertificationComponent.vue";
+import BioComponent from "@/components/ViewComponent/BioComponent.vue";
+import ContactComponent from "@/components/ViewComponent/ContactComponent.vue";
+import LanguageComponent from "@/components/ViewComponent/LanguageComponent.vue";
+import SummaryComponent from "@/components/ViewComponent/SummaryComponent.vue";
+import SkillComponent from "@/components/ViewComponent/SkillComponent.vue";
+import ExperienceComponent from "@/components/ViewComponent/ExperienceComponent.vue";
+import EducationComponent from "@/components/ViewComponent/EducationComponent.vue";
+import CertificationComponent from "@/components/ViewComponent/CertificationComponent.vue";
 
 export default {
   components: {
