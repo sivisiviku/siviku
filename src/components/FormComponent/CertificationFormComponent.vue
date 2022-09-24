@@ -21,7 +21,7 @@
     </div>
     <div
       class="mb-2"
-      v-for="(certification, index) in certifications"
+      v-for="(certification, index) in getCertifications"
       :key="certification"
     >
       <div class="flex">
@@ -32,7 +32,7 @@
           stroke-width="1.5"
           stroke="currentColor"
           class="w-6 h-6 mr-2 cursor-pointer"
-          @click="removeCertifications(index)"
+          @click="updateCertifications({ value: index, isDelete: true })"
         >
           <path
             stroke-linecap="round"
@@ -47,21 +47,20 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   data() {
     return {
       certification: "",
-      certifications: [],
     };
   },
+  computed: mapGetters(["getCertifications"]),
   methods: {
+    ...mapActions(["updateCertifications"]),
     addCertifications() {
-      this.certifications.push(this.certification);
+      this.updateCertifications({ value: this.certification, isDelete: false });
       this.certification = "";
-      console.log(this.certifications);
-    },
-    removeCertifications(index) {
-      this.certifications.splice(index, 1);
     },
   },
 };

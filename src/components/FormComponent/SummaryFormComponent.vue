@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -20,8 +22,11 @@ export default {
   },
   watch: {
     summary(newSummary) {
-      console.log(newSummary);
+      this.updateSummary(newSummary);
     },
+  },
+  methods: {
+    ...mapActions(["updateSummary"]),
   },
 };
 </script>

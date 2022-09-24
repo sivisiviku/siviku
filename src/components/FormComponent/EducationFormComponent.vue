@@ -58,7 +58,7 @@
     </div>
     <div
       class="mb-2"
-      v-for="(education, index) in educations"
+      v-for="(education, index) in getEducations"
       :key="education.schoolName"
     >
       <div class="flex">
@@ -69,7 +69,7 @@
           stroke-width="1.5"
           stroke="currentColor"
           class="w-6 h-6 mr-2 cursor-pointer"
-          @click="removeEducations(index)"
+          @click="updateEducations({ value: index, isDelete: true })"
         >
           <path
             stroke-linecap="round"
@@ -91,6 +91,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -101,14 +103,15 @@ export default {
         degree: "",
         dateGraduated: "",
       },
-      educations: [],
     };
   },
+  computed: mapGetters(["getEducations"]),
   methods: {
+    ...mapActions(["updateEducations"]),
     addEducations() {
       const newDate = new Date(this.education.dateGraduated);
       this.education.dateGraduated = newDate.getFullYear();
-      this.educations.push(this.education);
+      this.updateEducations({ value: this.education, isDelete: false });
       this.education = {
         schoolName: "",
         schoolAdress: "",
@@ -116,9 +119,6 @@ export default {
         degree: "",
         dateGraduated: "",
       };
-    },
-    removeEducations(index) {
-      this.educations.splice(index, 1);
     },
   },
 };

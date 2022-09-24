@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -49,17 +51,25 @@ export default {
   },
   watch: {
     address(newAddress) {
-      console.log(newAddress);
+      this.updateAddress(newAddress);
     },
     phone(newPhone) {
-      console.log(newPhone);
+      this.updatePhone(newPhone);
     },
     email(newEmail) {
-      console.log(newEmail);
+      this.updateEmail(newEmail);
     },
     linkedin(newLinkedin) {
-      console.log(newLinkedin);
+      this.updateLinkedin(newLinkedin);
     },
+  },
+  methods: {
+    ...mapActions([
+      "updateAddress",
+      "updatePhone",
+      "updateEmail",
+      "updateLinkedin",
+    ]),
   },
 };
 </script>

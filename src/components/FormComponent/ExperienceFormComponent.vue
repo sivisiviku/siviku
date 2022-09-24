@@ -104,7 +104,7 @@
     <br />
     <div
       class="mb-2"
-      v-for="(experience, index) in experiences"
+      v-for="(experience, index) in getExperiences"
       :key="experience.companyName"
     >
       <div class="flex">
@@ -115,7 +115,7 @@
           stroke-width="1.5"
           stroke="currentColor"
           class="w-6 h-6 mr-2 cursor-pointer"
-          @click="removeExperiences(index)"
+          @click="updateExperiences({ value: index, isDelete: true })"
         >
           <path
             stroke-linecap="round"
@@ -145,6 +145,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -157,10 +159,11 @@ export default {
         dateEnd: "",
         jobDescriptions: [],
       },
-      experiences: [],
     };
   },
+  computed: mapGetters(["getExperiences"]),
   methods: {
+    ...mapActions(["updateExperiences"]),
     addJobDescriptions() {
       this.experience.jobDescriptions.push(this.jobDescription);
       this.jobDescription = "";
@@ -179,7 +182,7 @@ export default {
       const yearDateEnd = newDateEnd.getFullYear();
       this.experience.dateEnd = `${monthDateEnd}/${yearDateEnd}`;
 
-      this.experiences.push(this.experience);
+      this.updateExperiences({ value: this.experience, isDelete: false });
       this.experience = {
         companyName: "",
         companyAdress: "",
@@ -188,9 +191,6 @@ export default {
         dateEnd: "",
         jobDescriptions: [],
       };
-    },
-    removeExperiences(index) {
-      this.experiences.splice(index, 1);
     },
   },
 };

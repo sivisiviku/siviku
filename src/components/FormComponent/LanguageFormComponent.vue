@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -25,8 +27,12 @@ export default {
       const languages = newLanguages
         .split(",")
         .map((language) => language.trim());
-      console.log(languages);
+
+      this.updateLanguages(languages);
     },
+  },
+  methods: {
+    ...mapActions(["updateLanguages"]),
   },
 };
 </script>

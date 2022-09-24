@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import firebase from "firebase";
+// import firebase from "firebase";
 import BioFormComponent from "@/components/FormComponent/BioFormComponent.vue";
 import CertificationFormComponent from "@/components/FormComponent/CertificationFormComponent.vue";
 import ContactFormComponent from "@/components/FormComponent/ContactFormComponent.vue";
@@ -33,6 +33,7 @@ import ExperienceFormComponent from "@/components/FormComponent/ExperienceFormCo
 import LanguageFormComponent from "@/components/FormComponent/LanguageFormComponent.vue";
 import SkillFormComponent from "@/components/FormComponent/SkillFormComponent.vue";
 import SummaryFormComponent from "@/components/FormComponent/SummaryFormComponent.vue";
+import { mapGetters } from "vuex";
 
 export default {
   components: {
@@ -45,28 +46,45 @@ export default {
     SkillFormComponent,
     SummaryFormComponent,
   },
-  data() {
-    return {
-      form: {
-        firstName: "",
-        lastName: "",
-        photo: "",
-        contact: {
-          address: "",
-          email: "",
-          linkedin: "",
-        },
-        languages: [],
-        skill: [],
-        experiences: [],
-        educations: [],
-        certifications: [],
-      },
-    };
-  },
+  computed: mapGetters([
+    "getFirstName",
+    "getLastName",
+    "getPhotoUpload",
+    "getCertifications",
+    "getAddress",
+    "getPhone",
+    "getEmail",
+    "getLinkedin",
+    "getEducations",
+    "getExperiences",
+    "getLanguages",
+    "getSkills",
+    "getSummary",
+  ]),
   methods: {
     save() {
-      // firebase.storage().ref(`${this.photoUpload.name}`).put(this.photoUpload);
+      const form = {
+        firstName: this.getFirstName,
+        lastName: this.getLastName,
+        photo: this.getPhotoUpload.name,
+        contact: {
+          address: this.getAddress,
+          phone: this.getPhone,
+          email: this.getEmail,
+          linkedin: this.getLinkedin,
+        },
+        languages: this.getLanguages,
+        summary: this.getSummary,
+        skill: this.getSkills,
+        experiences: this.getExperiences,
+        educations: this.getEducations,
+        certifications: this.getCertifications,
+      };
+      console.log(JSON.stringify(form));
+      // firebase
+      //   .storage()
+      //   .ref(`${this.getPhotoUpload.name}`)
+      //   .put(this.getPhotoUpload);
     },
   },
 };

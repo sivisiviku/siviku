@@ -29,7 +29,7 @@
         <span class="text-xs italic text-slate-600">From 0 to 10</span>
       </div>
     </div>
-    <div class="mb-2" v-for="(skill, index) in skills" :key="skill.name">
+    <div class="mb-2" v-for="(skill, index) in getSkills" :key="skill.name">
       <div class="flex">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -38,7 +38,7 @@
           stroke-width="1.5"
           stroke="currentColor"
           class="w-6 h-6 mr-2 cursor-pointer"
-          @click="removeSkills(index)"
+          @click="updateSkills({ value: index, isDelete: true })"
         >
           <path
             stroke-linecap="round"
@@ -55,6 +55,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   data() {
     return {
@@ -62,21 +64,19 @@ export default {
         name: "",
         level: 0,
       },
-      skills: [],
     };
   },
+  computed: mapGetters(["getSkills"]),
   methods: {
+    ...mapActions(["updateSkills"]),
     addSkills() {
       if (this.skill.level < 1) this.skill.level = 1;
       if (this.skill.level > 10) this.skill.level = 10;
-      this.skills.push(this.skill);
+      this.updateSkills({ value: this.skill, isDelete: false });
       this.skill = {
         name: "",
         level: 0,
       };
-    },
-    removeSkills(index) {
-      this.skills.splice(index, 1);
     },
   },
 };
