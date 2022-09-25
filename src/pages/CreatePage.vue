@@ -34,6 +34,7 @@ import LanguageFormComponent from "@/components/FormComponent/LanguageFormCompon
 import SkillFormComponent from "@/components/FormComponent/SkillFormComponent.vue";
 import SummaryFormComponent from "@/components/FormComponent/SummaryFormComponent.vue";
 import { mapGetters } from "vuex";
+import axios from "axios";
 
 export default {
   components: {
@@ -62,7 +63,7 @@ export default {
     "getSummary",
   ]),
   methods: {
-    save() {
+    async save() {
       const form = {
         firstName: this.getFirstName,
         lastName: this.getLastName,
@@ -80,7 +81,24 @@ export default {
         educations: this.getEducations,
         certifications: this.getCertifications,
       };
-      console.log(JSON.stringify(form));
+
+      const formData = new FormData();
+      formData.append("file", this.getPhotoUpload);
+
+      try {
+        const response = await axios.post("/create-cv", form);
+        if (response.data.status === "success") {
+          formData.append("usersBioId", response.data.data.insertId);
+          try {
+            await axios.post("/upload-photo", formData);
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+
       // firebase
       //   .storage()
       //   .ref(`${this.getPhotoUpload.name}`)
