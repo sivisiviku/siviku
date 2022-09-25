@@ -50,6 +50,7 @@ export default {
   computed: mapGetters([
     "getFirstName",
     "getLastName",
+    "getOccupation",
     "getPhotoUpload",
     "getCertifications",
     "getAddress",
@@ -67,6 +68,7 @@ export default {
       const form = {
         firstName: this.getFirstName,
         lastName: this.getLastName,
+        occupation: this.getOccupation,
         photo: this.getPhotoUpload.name,
         contact: {
           address: this.getAddress,
@@ -87,8 +89,9 @@ export default {
 
       try {
         const response = await axios.post("/create-cv", form);
+        console.log(JSON.stringify(response.status));
         if (response.data.status === "success") {
-          formData.append("usersBioId", response.data.data.insertId);
+          formData.append("usersBioId", response.data.users_bio_id);
           try {
             await axios.post("/upload-photo", formData);
           } catch (err) {
