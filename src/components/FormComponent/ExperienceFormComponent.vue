@@ -12,12 +12,12 @@
         />
       </div>
       <div class="col-span-4">
-        <label class="block mb-2" for="companyAdress">Company Adress</label>
+        <label class="block mb-2" for="companyAddress">Company Address</label>
         <input
           class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
-          id="companyAdress"
+          id="companyAddress"
           type="text"
-          v-model="experience.companyAdress"
+          v-model="experience.companyAddress"
         />
       </div>
       <div class="col-span-4">
@@ -126,10 +126,12 @@
         <div>
           <hr />
           <strong>{{ experience.companyName }},</strong>
-          {{ experience.companyAdress }}
+          {{ experience.companyAddress }}
           <br />
-          <strong>{{ experience.title }}</strong> ({{ experience.dateStart }} -
-          {{ experience.dateEnd }})
+          <strong>{{ experience.title }}</strong> ({{
+            formatDate(experience.dateStart)
+          }}
+          - {{ formatDate(experience.dateEnd) }})
           <ul class="list-disc ml-5">
             <li
               v-for="jobDescription in experience.jobDescriptions"
@@ -153,7 +155,7 @@ export default {
       jobDescription: "",
       experience: {
         companyName: "",
-        companyAdress: "",
+        companyAddress: "",
         title: "",
         dateStart: "",
         dateEnd: "",
@@ -172,25 +174,21 @@ export default {
       this.experience.jobDescriptions.splice(index, 1);
     },
     addExperiences() {
-      const newDateStart = new Date(this.experience.dateStart);
-      const monthDateStart = newDateStart.getMonth() + 1;
-      const yearDateStart = newDateStart.getFullYear();
-      this.experience.dateStart = `${monthDateStart}/${yearDateStart}`;
-
-      const newDateEnd = new Date(this.experience.dateEnd);
-      const monthDateEnd = newDateEnd.getMonth() + 1;
-      const yearDateEnd = newDateEnd.getFullYear();
-      this.experience.dateEnd = `${monthDateEnd}/${yearDateEnd}`;
-
       this.updateExperiences({ value: this.experience, isDelete: false });
       this.experience = {
         companyName: "",
-        companyAdress: "",
+        companyAddress: "",
         title: "",
         dateStart: "",
         dateEnd: "",
         jobDescriptions: [],
       };
+    },
+    formatDate(date) {
+      const newDate = new Date(date);
+      const monthDate = newDate.getMonth() + 1;
+      const yearDate = newDate.getFullYear();
+      return `${monthDate}/${yearDate}`;
     },
   },
 };

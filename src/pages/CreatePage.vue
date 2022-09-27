@@ -52,6 +52,7 @@ export default {
     "getLastName",
     "getOccupation",
     "getPhotoUpload",
+    "getSummary",
     "getCertifications",
     "getAddress",
     "getPhone",
@@ -61,7 +62,6 @@ export default {
     "getExperiences",
     "getLanguages",
     "getSkills",
-    "getSummary",
   ]),
   methods: {
     async save() {
@@ -78,7 +78,7 @@ export default {
         },
         languages: this.getLanguages,
         summary: this.getSummary,
-        skill: this.getSkills,
+        skills: this.getSkills,
         experiences: this.getExperiences,
         educations: this.getEducations,
         certifications: this.getCertifications,
@@ -89,7 +89,6 @@ export default {
 
       try {
         const response = await axios.post("/create-cv", form);
-        console.log(JSON.stringify(response.status));
         if (response.data.status === "success") {
           formData.append("usersBioId", response.data.users_bio_id);
           try {

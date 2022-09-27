@@ -12,12 +12,12 @@
         />
       </div>
       <div class="col-span-4">
-        <label class="block mb-2" for="schoolAdress">School Adress</label>
+        <label class="block mb-2" for="schoolAddress">School Address</label>
         <input
           class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
-          id="schoolAdress"
+          id="schoolAddress"
           type="text"
-          v-model="education.schoolAdress"
+          v-model="education.schoolAddress"
         />
       </div>
       <div class="col-span-4">
@@ -80,10 +80,10 @@
         <div>
           <hr />
           <strong>{{ education.schoolName }},</strong>
-          {{ education.schoolAdress }}
+          {{ education.schoolAddress }}
           <br />
           <strong>{{ education.degree }}</strong> in {{ education.major }} -
-          {{ education.dateGraduated }}
+          {{ formatDate(education.dateGraduated) }}
         </div>
       </div>
     </div>
@@ -98,7 +98,7 @@ export default {
     return {
       education: {
         schoolName: "",
-        schoolAdress: "",
+        schoolAddress: "",
         major: "",
         degree: "",
         dateGraduated: "",
@@ -109,16 +109,18 @@ export default {
   methods: {
     ...mapActions(["updateEducations"]),
     addEducations() {
-      const newDate = new Date(this.education.dateGraduated);
-      this.education.dateGraduated = newDate.getFullYear();
       this.updateEducations({ value: this.education, isDelete: false });
       this.education = {
         schoolName: "",
-        schoolAdress: "",
+        schoolAddress: "",
         major: "",
         degree: "",
         dateGraduated: "",
       };
+    },
+    formatDate(date) {
+      const newDate = new Date(date);
+      return newDate.getFullYear();
     },
   },
 };

@@ -4,6 +4,7 @@ const state = {
   occupation: "",
   photoPreview: "",
   photoUpload: "",
+  summary: "",
 };
 
 const getters = {
@@ -12,6 +13,7 @@ const getters = {
   getOccupation: (state) => state.occupation,
   getPhotoPreview: (state) => state.photoPreview,
   getPhotoUpload: (state) => state.photoUpload,
+  getSummary: (state) => state.summary,
 };
 
 const actions = {
@@ -30,6 +32,9 @@ const actions = {
   updatePhotoPreview({ commit }, payload) {
     commit("setPhotoPreview", payload);
   },
+  updateSummary({ commit }, payload) {
+    commit("setSummary", payload);
+  },
 };
 
 const mutations = {
@@ -38,6 +43,7 @@ const mutations = {
   setOccupation: (state, payload) => (state.occupation = payload),
   setPhotoUpload: (state, payload) => (state.photoUpload = payload),
   setPhotoPreview: (state, payload) => (state.photoPreview = payload),
+  setSummary: (state, payload) => (state.summary = payload),
 };
 
 export default {
