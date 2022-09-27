@@ -31,11 +31,15 @@
     <img :src="getPhotoPreview" width="300" />
     <input
       class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
+      :class="{ 'border-2': isError, 'border-red-600': isError }"
       id="photo"
       type="file"
       accept="image/*"
       @change="inputFile"
     />
+    <span v-if="isError" class="text-xs italic text-red-600">{{
+      errorMessage
+    }}</span>
   </div>
 </template>
 
@@ -48,6 +52,8 @@ export default {
       firstName: "",
       lastName: "",
       occupation: "",
+      isError: false,
+      errorMessage: "",
     };
   },
   computed: mapGetters(["getPhotoPreview", "getPhotoUpload"]),
@@ -71,12 +77,33 @@ export default {
       "updatePhotoPreview",
     ]),
     inputFile(event) {
-      this.updatePhotoUpload(event.target.files[0]);
+      const file = event.target.files[0];
+      const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
       const fileReader = new FileReader();
-      fileReader.addEventListener("load", () => {
-        this.updatePhotoPreview(fileReader.result);
-      });
-      fileReader.readAsDataURL(this.getPhotoUpload);
+      if (!allowedTypes.includes(file.type)) {
+        this.updatePhotoUpload("");
+        this.updatePhotoPreview("");
+        this.isError = true;
+        this.errorMessage = "Only images are allowed";
+      } else if (file.size > 200000) {
+        this.updatePhotoUpload("");
+        this.updatePhotoPreview("");
+        this.isError = true;
+        this.errorMessage = "Max file size is 200Kb";
+      } else {
+        this.updatePhotoUpload(file);
+        fileReader.addEventListener("load", () => {
+          this.updatePhotoPreview(fileReader.result);
+        });
+        this.isError = false;
+        this.errorMessage = "";
+      }
+
+      try {
+        fileReader.readAsDataURL(this.getPhotoUpload);
+      } catch (error) {
+        console.log(error.message);
+      }
     },
   },
 };
