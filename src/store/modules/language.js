@@ -8,12 +8,14 @@ const getters = {
 
 const actions = {
   updateLanguages({ commit }, payload) {
-    commit("setLanguages", payload);
+    const updateType = payload.isDelete ? "removeLanguages" : "setLanguages";
+    commit(updateType, payload.value);
   },
 };
 
 const mutations = {
-  setLanguages: (state, payload) => (state.languages = payload),
+  setLanguages: (state, payload) => state.languages.push(payload),
+  removeLanguages: (state, payload) => state.languages.splice(payload, 1),
 };
 
 export default {
