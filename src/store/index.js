@@ -6,6 +6,7 @@ import education from "./modules/education";
 import experience from "./modules/experience";
 import language from "./modules/language";
 import skill from "./modules/skill";
+import data from "./modules/data";
 
 const store = createStore({
   modules: {
@@ -15,7 +16,8 @@ const store = createStore({
     education,
     experience,
     language,
-    skill
+    skill,
+    data,
   },
 });
 

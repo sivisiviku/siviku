@@ -2,18 +2,18 @@
   <div>
     <h3 class="text-2xl mb-2">Experience</h3>
     <hr />
-    <div v-for="experience in experiences" :key="experience.companyName">
-      <strong>{{ experience.companyName }},</strong>
-      {{ experience.companyAddress }}
+    <div v-for="experience in usersExperiences" :key="experience.company_name">
+      <strong>{{ experience.company_name }},</strong>
+      {{ experience.company_address }}
       <br />
-      <strong>{{ experience.title }}</strong> ({{ experience.dateStart }} -
-      {{ experience.dateEnd }})
+      <strong>{{ experience.title }}</strong> ({{ experience.date_start }} -
+      {{ experience.date_end }})
       <ul class="list-disc ml-5">
         <li
-          v-for="jobDescription in experience.jobDescriptions"
-          :key="jobDescription"
+          v-for="jobDescription in experience.job_descriptions"
+          :key="jobDescription.job_description"
         >
-          {{ jobDescription }}
+          {{ jobDescription.job_description }}
         </li>
       </ul>
     </div>
@@ -22,26 +22,7 @@
 
 <script>
 export default {
-  data() {
-    return {
-      experiences: [
-        {
-          companyName: "Luna Web Design",
-          companyAddress: "New York",
-          title: "Web Developer",
-          dateStart: "09/2015",
-          dateEnd: "05/2019",
-          jobDescriptions: [
-            "Cooperate with designers to create clean interfaces and simple, intuitive interactions and experiences.",
-            "Develop project concepts and maintain optimal workflow.",
-            "Work with senior developer to manage large, complex design projects for corporate clients.",
-            "Complete detailed programming and development tasks for front end public and internal websites as well as challenging back-end server code.",
-            "Carry out quality assurance tests to discover errors and optimize usability.",
-          ],
-        },
-      ],
-    };
-  },
+  props: ["usersExperiences"],
 };
 </script>
 
