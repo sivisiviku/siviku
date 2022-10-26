@@ -6,6 +6,10 @@
         <div class="flex">
           <input
             class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none mr-4"
+            :class="{
+              'border-2': getCertificationsValidation === false,
+              'border-red-600': getCertificationsValidation === false,
+            }"
             id="certification"
             type="text"
             v-model="certification"
@@ -17,6 +21,11 @@
             Add
           </button>
         </div>
+        <span
+          v-if="getCertificationsValidation === false"
+          class="text-xs italic text-red-600"
+          >Certification can not be empty</span
+        >
       </div>
     </div>
     <div
@@ -55,11 +64,12 @@ export default {
       certification: "",
     };
   },
-  computed: mapGetters(["getCertifications"]),
+  computed: mapGetters(["getCertifications", "getCertificationsValidation"]),
   methods: {
-    ...mapActions(["updateCertifications"]),
+    ...mapActions(["updateCertifications", "updateCertificationsValidation"]),
     addCertifications() {
       this.updateCertifications({ value: this.certification, isDelete: false });
+      this.updateCertificationsValidation(true);
       this.certification = "";
     },
   },

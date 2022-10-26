@@ -7,6 +7,7 @@ import experience from "./modules/experience";
 import language from "./modules/language";
 import skill from "./modules/skill";
 import data from "./modules/data";
+import formValidation from "./modules/formValidation";
 
 const store = createStore({
   modules: {
@@ -18,6 +19,7 @@ const store = createStore({
     language,
     skill,
     data,
+    formValidation,
   },
 });
 

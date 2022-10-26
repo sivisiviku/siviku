@@ -5,16 +5,40 @@
         <label class="block mb-2" for="language">Language</label>
         <input
           class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          :class="{
+            'border-2':
+              getLanguagesValidation === false ||
+              validation.name.isValid === false,
+            'border-red-600':
+              getLanguagesValidation === false ||
+              validation.name.isValid === false,
+          }"
           id="language"
           type="text"
           v-model="language.name"
         />
+        <span
+          v-if="
+            getLanguagesValidation === false ||
+            validation.name.isValid === false
+          "
+          class="text-xs italic text-red-600"
+          >Language can not be empty</span
+        >
       </div>
       <div class="col-span-4">
         <label class="block mb-2" for="level">Level</label>
         <div class="flex">
           <select
             class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none w-2/3 mr-4"
+            :class="{
+              'border-2':
+                getLanguagesValidation === false ||
+                validation.level.isValid === false,
+              'border-red-600':
+                getLanguagesValidation === false ||
+                validation.level.isValid === false,
+            }"
             id="level"
             v-model="language.level"
           >
@@ -31,6 +55,11 @@
             Add
           </button>
         </div>
+        <span
+          v-if="validation.level.isValid === false"
+          class="text-xs italic text-red-600"
+          >{{ validation.level.message }}</span
+        >
       </div>
     </div>
     <div
@@ -73,13 +102,45 @@ export default {
         name: "",
         level: "",
       },
+      validation: {
+        name: {
+          isValid: true,
+        },
+        level: {
+          isValid: true,
+          message: "",
+        },
+      },
     };
   },
-  computed: mapGetters(["getLanguages"]),
+  computed: mapGetters(["getLanguages", "getLanguagesValidation"]),
   methods: {
-    ...mapActions(["updateLanguages"]),
+    ...mapActions(["updateLanguages", "updateLanguagesValidation"]),
     addLanguages() {
+      let isValid = true;
+
+      if (this.language.name === "") {
+        this.validation.name.isValid = false;
+        isValid = false;
+      } else {
+        this.validation.name.isValid = true;
+      }
+
+      if (this.language.level === "") {
+        this.validation.level.isValid = false;
+        this.validation.level.message = "Level can not be empty";
+        isValid = false;
+      } else {
+        this.validation.level.isValid = true;
+        this.validation.level.message = "";
+      }
+
+      if (isValid === false) {
+        return;
+      }
+
       this.updateLanguages({ value: this.language, isDelete: false });
+      this.updateLanguagesValidation(true);
       this.language = {
         name: "",
         level: "",

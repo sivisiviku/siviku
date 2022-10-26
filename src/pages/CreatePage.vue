@@ -33,7 +33,7 @@ import ExperienceFormComponent from "@/components/FormComponent/ExperienceFormCo
 import LanguageFormComponent from "@/components/FormComponent/LanguageFormComponent.vue";
 import SkillFormComponent from "@/components/FormComponent/SkillFormComponent.vue";
 import SummaryFormComponent from "@/components/FormComponent/SummaryFormComponent.vue";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 
 export default {
@@ -47,24 +47,166 @@ export default {
     SkillFormComponent,
     SummaryFormComponent,
   },
-  computed: mapGetters([
-    "getFirstName",
-    "getLastName",
-    "getOccupation",
-    "getPhotoUpload",
-    "getSummary",
-    "getCertifications",
-    "getAddress",
-    "getPhone",
-    "getEmail",
-    "getLinkedin",
-    "getEducations",
-    "getExperiences",
-    "getLanguages",
-    "getSkills",
-  ]),
+  computed: {
+    ...mapGetters([
+      "getFirstName",
+      "getLastName",
+      "getOccupation",
+      "getPhotoUpload",
+      "getSummary",
+      "getCertifications",
+      "getAddress",
+      "getPhone",
+      "getEmail",
+      "getLinkedin",
+      "getEducations",
+      "getExperiences",
+      "getLanguages",
+      "getSkills",
+    ]),
+  },
   methods: {
+    ...mapActions([
+      "updateFirstNameValidation",
+      "updateLastNameValidation",
+      "updateOccupationValidation",
+      "updatePhotoUploadValidation",
+      "updateAddressValidation",
+      "updatePhoneValidation",
+      "updateEmailValidation",
+      "updateLinkedinValidation",
+      "updateLanguagesValidation",
+      "updateSummaryValidation",
+      "updateSkillsValidation",
+      "updateExperiencesValidation",
+      "updateEducationsValidation",
+      "updateCertificationsValidation",
+      "updatePhotoUploadValidationMessage",
+    ]),
+    isValid() {
+      let result = true;
+
+      if (this.getFirstName === "") {
+        this.updateFirstNameValidation(false);
+        this.result = false;
+      } else {
+        this.updateFirstNameValidation(true);
+        this.result = true;
+      }
+
+      if (this.getLastName === "") {
+        this.updateLastNameValidation(false);
+        result = false;
+      } else {
+        this.updateLastNameValidation(true);
+        this.result = true;
+      }
+
+      if (this.getOccupation === "") {
+        this.updateOccupationValidation(false);
+        result = false;
+      } else {
+        this.updateOccupationValidation(true);
+        this.result = true;
+      }
+
+      if (this.getPhotoUpload.name === undefined) {
+        this.updatePhotoUploadValidation(false);
+        this.updatePhotoUploadValidationMessage("Photo can not be empty");
+        result = false;
+      } else {
+        this.updatePhotoUploadValidation(true);
+        this.updatePhotoUploadValidationMessage("");
+        this.result = true;
+      }
+
+      if (this.getAddress === "") {
+        this.updateAddressValidation(false);
+        result = false;
+      } else {
+        this.updateAddressValidation(true);
+        this.result = true;
+      }
+
+      if (this.getPhone === "") {
+        this.updatePhoneValidation(false);
+        result = false;
+      } else {
+        this.updatePhoneValidation(true);
+        this.result = true;
+      }
+
+      if (this.getEmail === "") {
+        this.updateEmailValidation(false);
+        result = false;
+      } else {
+        this.updateEmailValidation(true);
+        this.result = true;
+      }
+
+      if (this.getLinkedin === "") {
+        this.updateLinkedinValidation(false);
+        result = false;
+      } else {
+        this.updateLinkedinValidation(true);
+        this.result = true;
+      }
+
+      if (this.getLanguages.length === 0) {
+        this.updateLanguagesValidation(false);
+        result = false;
+      } else {
+        this.updateLanguagesValidation(true);
+        this.result = true;
+      }
+
+      if (this.getSummary === "") {
+        this.updateSummaryValidation(false);
+        result = false;
+      } else {
+        this.updateSummaryValidation(true);
+        this.result = true;
+      }
+
+      if (this.getSkills.length === 0) {
+        this.updateSkillsValidation(false);
+        result = false;
+      } else {
+        this.updateSkillsValidation(true);
+        this.result = true;
+      }
+
+      if (this.getExperiences.length === 0) {
+        this.updateExperiencesValidation(false);
+        result = false;
+      } else {
+        this.updateExperiencesValidation(true);
+        this.result = true;
+      }
+
+      if (this.getEducations.length === 0) {
+        this.updateEducationsValidation(false);
+        result = false;
+      } else {
+        this.updateEducationsValidation(true);
+        this.result = true;
+      }
+
+      if (this.getCertifications.length === 0) {
+        this.updateCertificationsValidation(false);
+        result = false;
+      } else {
+        this.updateCertificationsValidation(true);
+        this.result = true;
+      }
+
+      return result;
+    },
     async save() {
+      if (!this.isValid()) {
+        return;
+      }
+
       const form = {
         firstName: this.getFirstName,
         lastName: this.getLastName,

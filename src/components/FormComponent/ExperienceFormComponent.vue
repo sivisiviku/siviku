@@ -6,48 +6,113 @@
         <label class="block mb-2" for="companyName">Company Name</label>
         <input
           class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          :class="{
+            'border-2':
+              getExperiencesValidation === false ||
+              validation.companyName.isValid === false,
+            'border-red-600':
+              getExperiencesValidation === false ||
+              validation.companyName.isValid === false,
+          }"
           id="companyName"
           type="text"
           v-model="experience.companyName"
         />
+        <span
+          v-if="validation.companyName.isValid === false"
+          class="text-xs italic text-red-600"
+          >Company Name can not be empty</span
+        >
       </div>
       <div class="col-span-4">
         <label class="block mb-2" for="companyAddress">Company Address</label>
         <input
           class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          :class="{
+            'border-2':
+              getExperiencesValidation === false ||
+              validation.companyAddress.isValid === false,
+            'border-red-600':
+              getExperiencesValidation === false ||
+              validation.companyAddress.isValid === false,
+          }"
           id="companyAddress"
           type="text"
           v-model="experience.companyAddress"
         />
+        <span
+          v-if="validation.companyAddress.isValid === false"
+          class="text-xs italic text-red-600"
+          >Company Address can not be empty</span
+        >
       </div>
       <div class="col-span-4">
         <label class="block mb-2" for="title">Title</label>
         <input
           class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          :class="{
+            'border-2':
+              getExperiencesValidation === false ||
+              validation.title.isValid === false,
+            'border-red-600':
+              getExperiencesValidation === false ||
+              validation.title.isValid === false,
+          }"
           id="title"
           type="text"
           v-model="experience.title"
         />
+        <span
+          v-if="validation.title.isValid === false"
+          class="text-xs italic text-red-600"
+          >Title can not be empty</span
+        >
       </div>
       <div class="col-span-2">
         <label class="block mb-2" for="dateStart">First Day</label>
         <input
           class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          :class="{
+            'border-2':
+              getExperiencesValidation === false ||
+              validation.dateStart.isValid === false,
+            'border-red-600':
+              getExperiencesValidation === false ||
+              validation.dateStart.isValid === false,
+          }"
           id="dateStart"
           type="date"
           v-model="experience.dateStart"
         />
+        <span
+          v-if="validation.dateStart.isValid === false"
+          class="text-xs italic text-red-600"
+          >Date Start can not be empty</span
+        >
       </div>
       <div class="col-span-2">
         <label class="block mb-2" for="dateEnd">Last Day</label>
         <input
           class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          :class="{
+            'border-2':
+              getExperiencesValidation === false ||
+              validation.dateEnd.isValid === false,
+            'border-red-600':
+              getExperiencesValidation === false ||
+              validation.dateEnd.isValid === false,
+          }"
           id="dateEnd"
           type="date"
           v-model="experience.dateEnd"
         />
         <span class="text-xs italic text-slate-600"
           >Leave last day empty if you still work in this company</span
+        ><br />
+        <span
+          v-if="validation.dateEnd.isValid === false"
+          class="text-xs italic text-red-600"
+          >Date End can not be empty</span
         >
       </div>
       <div class="col-span-8">
@@ -56,11 +121,29 @@
           <textarea
             rows="4"
             class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
+            :class="{
+              'border-2':
+                getExperiencesValidation === false ||
+                validation.jobDescriptions.isValid === false,
+              'border-red-600':
+                getExperiencesValidation === false ||
+                validation.jobDescriptions.isValid === false,
+            }"
             id="jobDescription"
             type="text"
             v-model="jobDescription"
           ></textarea>
         </div>
+        <span
+          v-if="validation.jobDescriptions.isValid === false"
+          class="text-xs italic text-red-600"
+          >Job Description can not be empty</span
+        >
+        <span
+          v-else-if="getExperiencesValidation === false"
+          class="text-xs italic text-red-600"
+          >Experience can not be empty</span
+        >
       </div>
     </div>
     <div class="flex justify-end">
@@ -161,12 +244,47 @@ export default {
         dateEnd: "",
         jobDescriptions: [],
       },
+      validation: {
+        companyName: {
+          isValid: true,
+          message: "",
+        },
+        companyAddress: {
+          isValid: true,
+          message: "",
+        },
+        title: {
+          isValid: true,
+          message: "",
+        },
+        dateStart: {
+          isValid: true,
+          message: "",
+        },
+        dateEnd: {
+          isValid: true,
+          message: "",
+        },
+        jobDescriptions: {
+          isValid: true,
+          message: "",
+        },
+      },
     };
   },
-  computed: mapGetters(["getExperiences"]),
+  computed: mapGetters(["getExperiences", "getExperiencesValidation"]),
   methods: {
-    ...mapActions(["updateExperiences"]),
+    ...mapActions(["updateExperiences", "updateExperiencesValidation"]),
     addJobDescriptions() {
+      if (this.jobDescription === "") {
+        this.validation.jobDescriptions.isValid = false;
+        this.validation.jobDescriptions.message =
+          "Job Description can not be empty";
+        return;
+      } else {
+        this.validation.jobDescriptions.isValid = true;
+        this.validation.jobDescriptions.message = "";
+      }
       this.experience.jobDescriptions.push(this.jobDescription);
       this.jobDescription = "";
     },
@@ -174,7 +292,70 @@ export default {
       this.experience.jobDescriptions.splice(index, 1);
     },
     addExperiences() {
+      let isValid = true;
+
+      if (this.experience.companyName === "") {
+        this.validation.companyName.isValid = false;
+        this.validation.companyName.message = "Company Name can not be empty";
+        isValid = false;
+      } else {
+        this.validation.companyName.isValid = true;
+        this.validation.companyName.message = "";
+      }
+
+      if (this.experience.companyAddress === "") {
+        this.validation.companyAddress.isValid = false;
+        this.validation.companyAddress.message =
+          "Company Address can not be empty";
+        isValid = false;
+      } else {
+        this.validation.companyAddress.isValid = true;
+        this.validation.companyAddress.message = "";
+      }
+
+      if (this.experience.title === "") {
+        this.validation.title.isValid = false;
+        this.validation.title.message = "Title can not be empty";
+        isValid = false;
+      } else {
+        this.validation.title.isValid = true;
+        this.validation.title.message = "";
+      }
+
+      if (this.experience.dateStart === "") {
+        this.validation.dateStart.isValid = false;
+        this.validation.dateStart.message = "Date Start can not be empty";
+        isValid = false;
+      } else {
+        this.validation.dateStart.isValid = true;
+        this.validation.dateStart.message = "";
+      }
+
+      if (this.experience.dateEnd === "") {
+        this.validation.dateEnd.isValid = false;
+        this.validation.dateEnd.message = "Date End can not be empty";
+        isValid = false;
+      } else {
+        this.validation.dateEnd.isValid = true;
+        this.validation.dateEnd.message = "";
+      }
+
+      if (this.experience.jobDescriptions.length === 0) {
+        this.validation.jobDescriptions.isValid = false;
+        this.validation.jobDescriptions.message =
+          "Job Description can not be empty";
+        isValid = false;
+      } else {
+        this.validation.jobDescriptions.isValid = true;
+        this.validation.jobDescriptions.message = "";
+      }
+
+      if (isValid === false) {
+        return;
+      }
+
       this.updateExperiences({ value: this.experience, isDelete: false });
+      this.updateExperiencesValidation(true);
       this.experience = {
         companyName: "",
         companyAddress: "",

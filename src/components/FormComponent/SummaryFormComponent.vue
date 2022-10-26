@@ -4,15 +4,24 @@
     <textarea
       rows="4"
       class="shadow rounded w-full py-2 px-3 leading-tight focus:outline-none"
+      :class="{
+        'border-2': getSummaryValidation === false,
+        'border-red-600': getSummaryValidation === false,
+      }"
       id="summary"
       type="text"
       v-model="summary"
     ></textarea>
+    <span
+      v-if="getSummaryValidation === false"
+      class="text-xs italic text-red-600"
+      >Summary can not be empty</span
+    >
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   data() {
@@ -25,8 +34,9 @@ export default {
       this.updateSummary(newSummary);
     },
   },
+  computed: mapGetters(["getSummaryValidation"]),
   methods: {
-    ...mapActions(["updateSummary"]),
+    ...mapActions(["updateSummary", "updateSummaryValidation"]),
   },
 };
 </script>
