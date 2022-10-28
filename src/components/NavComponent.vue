@@ -21,7 +21,7 @@
         <strong>Siviku</strong>
       </div>
     </div>
-    <div>
+    <div v-if="getAnyDataExist">
       <router-link :to="{ name: 'home' }">
         <button
           class="bg-transparent text-sky-600 border border-sky-600 hover:border-transparent hover:bg-sky-600 mx-5 px-5 py-2 w-24 hover:text-white font-semibold rounded-full"
@@ -33,7 +33,7 @@
         <button
           class="bg-transparent text-green-600 border border-green-600 hover:border-transparent hover:bg-green-600 mx-5 px-5 py-2 w-24 hover:text-white font-semibold rounded-full"
         >
-          Create
+          Edit
         </button>
       </router-link>
     </div>
@@ -41,7 +41,11 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+
+export default {
+  computed: mapGetters(["getAnyDataExist"]),
+};
 </script>
 
 <style lang="scss" scoped></style>
