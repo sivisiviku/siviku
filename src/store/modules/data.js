@@ -3,17 +3,22 @@ import axios from "axios";
 const state = {
   data: null,
   anyDataExist: false,
+  currentPage: "",
 };
 
 const getters = {
   getData: (state) => state.data,
   getAnyDataExist: (state) => state.anyDataExist,
+  getCurrentPage: (state) => state.currentPage,
 };
 
 const actions = {
   async fetchData({ commit }, payload) {
     const response = await axios.get(payload);
     commit("setData", response.data);
+  },
+  updateCurrentPage({ commit }, payload) {
+    commit("setCurrentPage", payload);
   },
 };
 
@@ -41,6 +46,10 @@ const mutations = {
     if (state.data.users_skills.length > 0) {
       state.anyDataExist = true;
     }
+  },
+  setCurrentPage: (state, payload) => {
+    console.log(payload);
+    state.currentPage = payload;
   },
 };
 

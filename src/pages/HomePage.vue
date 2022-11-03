@@ -104,9 +104,11 @@ export default {
   },
   computed: mapGetters(["getData", "getAnyDataExist"]),
   methods: {
-    ...mapActions(["fetchData"]),
+    ...mapActions(["fetchData", "updateCurrentPage"]),
   },
   async created() {
+    this.updateCurrentPage(this.$route.name);
+
     await this.fetchData("/view-cv/1");
 
     if (this.getAnyDataExist === false) {

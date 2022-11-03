@@ -22,14 +22,14 @@
       </div>
     </div>
     <div v-if="getAnyDataExist">
-      <router-link :to="{ name: 'home' }">
+      <router-link v-if="getCurrentPage === 'create'" :to="{ name: 'home' }">
         <button
           class="bg-transparent text-sky-600 border border-sky-600 hover:border-transparent hover:bg-sky-600 mx-5 px-5 py-2 w-24 hover:text-white font-semibold rounded-full"
         >
           View
         </button>
       </router-link>
-      <router-link :to="{ name: 'create' }">
+      <router-link v-if="getCurrentPage === 'home'" :to="{ name: 'create' }">
         <button
           class="bg-transparent text-green-600 border border-green-600 hover:border-transparent hover:bg-green-600 mx-5 px-5 py-2 w-24 hover:text-white font-semibold rounded-full"
         >
@@ -44,7 +44,7 @@
 import { mapGetters } from "vuex";
 
 export default {
-  computed: mapGetters(["getAnyDataExist"]),
+  computed: mapGetters(["getAnyDataExist", "getCurrentPage"]),
 };
 </script>
 
